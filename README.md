@@ -16,7 +16,7 @@ GridShift forecasts the carbon-intensity curve from weather, then moves flexible
 workloads into the cleanest hours inside their deadline. Same work, same deadline,
 **6–40% less CO₂**, no new hardware.
 
-**[▶ Live dashboard](https://YOUR-USERNAME.github.io/gridshift/)** · runs a trained
+**[▶ Live dashboard](https://s155003.github.io/gridshift/)** · runs a trained
 model in your browser against live weather, no backend.
 
 ![Forecast vs actual](assets/forecast.png)
@@ -241,7 +241,7 @@ network call failed.
 ## Try it
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/gridshift
+git clone https://github.com/s155003/gridshift
 cd gridshift
 pip install -r requirements.txt
 ```

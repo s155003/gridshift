@@ -129,8 +129,8 @@ weakest case in the product and it's visible in the README.
 
 ## Demo
 
-- **Live dashboard:** https://YOUR-USERNAME.github.io/gridshift/
-- **Source:** https://github.com/YOUR-USERNAME/gridshift
+- **Live dashboard:** https://s155003.github.io/gridshift/
+- **Source:** https://github.com/s155003/gridshift
 - **Video:** (see `DEMO_SCRIPT.md`)
 
 The dashboard runs the actual trained gradient-boosted trees **client-side** — it
