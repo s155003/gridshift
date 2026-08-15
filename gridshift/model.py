@@ -225,24 +225,30 @@ class CarbonIntensityModel:
         return p
 
     def predict_from_json_spec(self, X: np.ndarray) -> np.ndarray:
-        """Reference implementation of the JSON evaluator, used by tests.
+        """Evaluate this model's exported spec. See :func:`predict_from_spec`."""
+        return predict_from_spec(self.to_json(), X)
 
-        Mirrors ``web/model.js`` exactly so that a test can assert the browser
-        and Python paths agree.
-        """
-        spec = self.to_json()
-        out = np.full(len(X), spec["baseline"], dtype=float)
-        for tree in spec["trees"]:
-            feat, thr, left, right, val, is_leaf, miss_left = (
-                tree["f"], tree["t"], tree["l"], tree["r"],
-                tree["v"], tree["leaf"], tree["m"])
-            for i, row in enumerate(X):
-                node = 0
-                while not is_leaf[node]:
-                    x = row[feat[node]]
-                    if np.isnan(x):
-                        node = left[node] if miss_left[node] else right[node]
-                    else:
-                        node = left[node] if x <= thr[node] else right[node]
-                out[i] += val[node]
-        return np.clip(out, 0.0, None)
+
+def predict_from_spec(spec: dict[str, Any], X: np.ndarray) -> np.ndarray:
+    """Reference implementation of the exported-JSON evaluator.
+
+    Mirrors ``web/model.js`` exactly so a test can assert the browser and
+    Python paths agree. Takes the spec dict rather than a fitted estimator, so
+    the parity test needs only the committed ``web/model.json`` -- no pickled
+    artefact, and no dependency on the scikit-learn version that produced it.
+    """
+    out = np.full(len(X), spec["baseline"], dtype=float)
+    for tree in spec["trees"]:
+        feat, thr, left, right, val, is_leaf, miss_left = (
+            tree["f"], tree["t"], tree["l"], tree["r"],
+            tree["v"], tree["leaf"], tree["m"])
+        for i, row in enumerate(X):
+            node = 0
+            while not is_leaf[node]:
+                x = row[feat[node]]
+                if np.isnan(x):
+                    node = left[node] if miss_left[node] else right[node]
+                else:
+                    node = left[node] if x <= thr[node] else right[node]
+            out[i] += val[node]
+    return np.clip(out, 0.0, None)

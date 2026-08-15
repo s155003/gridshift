@@ -23,7 +23,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from gridshift.model import CarbonIntensityModel  # noqa: E402
+from gridshift.model import predict_from_spec  # noqa: E402
 from gridshift.scheduler import JobSpec, optimize  # noqa: E402
 
 NODE = shutil.which("node")
@@ -109,7 +109,12 @@ console.log(JSON.stringify(INPUT.rows.map((r) => predictOne(spec, r))));
 @pytest.mark.skipif(not (ROOT / "web" / "model.json").exists(),
                     reason="model not exported yet")
 def test_model_matches_javascript() -> None:
-    """The exported trees must evaluate identically in Node and Python."""
+    """The exported trees must evaluate identically in Node and Python.
+
+    Both sides read the committed ``web/model.json`` — the artefact the
+    published page actually ships — so this runs on a fresh clone with no
+    pickled model and no dependence on the scikit-learn version that fit it.
+    """
     spec = json.loads((ROOT / "web" / "model.json").read_text(encoding="utf-8"))
     names = spec["features"]
 
@@ -120,9 +125,10 @@ def test_model_matches_javascript() -> None:
 
     js = run_node(MODEL_JS, {"rows": rows})
 
-    model = CarbonIntensityModel.load(ROOT / "models" / "carbon_model.joblib")
     X = np.array([[r[n] for n in names] for r in rows], dtype=float)
-    py = model.predict_from_json_spec(X)
+    py = predict_from_spec(spec, X)
 
+    assert len(js) == len(py) == len(rows)
+    assert any(v > 0 for v in py), "degenerate spec: every prediction clipped to 0"
     for a, b in zip(py, js):
         assert a == pytest.approx(b, rel=1e-6, abs=1e-6)
