@@ -1,0 +1,233 @@
+{
+  "generated_utc": "2026-08-15T13:23:28+00:00",
+  "dataset": {
+    "rows": 8640,
+    "start": "2025-08-13T00:00:00+00:00",
+    "end": "2026-08-07T23:00:00+00:00",
+    "train_rows": 6048,
+    "val_rows": 1296,
+    "test_rows": 1296,
+    "intensity_min": 20.5,
+    "intensity_max": 282.0,
+    "intensity_mean": 124.61938657407407
+  },
+  "policy": {
+    "loss": "squared-error",
+    "smooth_hours": 3,
+    "val_capture": 0.36238046713368977,
+    "selection_table": [
+      {
+        "loss": "squared-error",
+        "smooth_h": 3,
+        "mean_capture": 0.36238046713368977
+      },
+      {
+        "loss": "median-L1",
+        "smooth_h": 5,
+        "mean_capture": 0.3162583179394898
+      },
+      {
+        "loss": "squared-error",
+        "smooth_h": 5,
+        "mean_capture": 0.2999370274355271
+      },
+      {
+        "loss": "squared-error",
+        "smooth_h": 7,
+        "mean_capture": 0.293822282307889
+      },
+      {
+        "loss": "median-L1",
+        "smooth_h": 7,
+        "mean_capture": 0.2607575145133364
+      },
+      {
+        "loss": "squared-error",
+        "smooth_h": 0,
+        "mean_capture": 0.24538754992011258
+      },
+      {
+        "loss": "median-L1",
+        "smooth_h": 3,
+        "mean_capture": 0.22217659087529512
+      },
+      {
+        "loss": "median-L1",
+        "smooth_h": 0,
+        "mean_capture": 0.15284965222480307
+      }
+    ]
+  },
+  "accuracy": {
+    "persistence (train mean)": {
+      "mae": 45.13085771645765,
+      "rmse": 52.820822828553325,
+      "r2": -0.008461032230377308,
+      "n": 1296
+    },
+    "hour-of-day climatology": {
+      "mae": 43.5838048696845,
+      "rmse": 53.03312017408259,
+      "r2": -0.01658373199192864,
+      "n": 1296
+    },
+    "month x hour climatology": {
+      "mae": 44.393365650601986,
+      "rmse": 52.512344503812656,
+      "r2": 0.0032835776125308413,
+      "n": 1296
+    },
+    "GridShift (weather ML)": {
+      "mae": 30.81454476753999,
+      "rmse": 37.43738138209931,
+      "r2": 0.49340637035630863,
+      "n": 1296
+    },
+    "National Grid official forecast": {
+      "mae": 9.55516975308642,
+      "rmse": 13.242769690441426,
+      "r2": 0.9366120875834761,
+      "n": 1296
+    }
+  },
+  "capture_rate": {
+    "persistence (train mean)": {
+      "ML training run (4h, GPU, by tomorrow)": 0.2547169811320754,
+      "EV charge (6h, splittable, overnight)": 0.2803738317757009,
+      "CI batch (2h, within the workday)": 0.46296296296296335,
+      "Dishwasher (2h, by morning)": 0.4392523364485985,
+      "Data centre batch (8h, splittable, 48h slack)": -0.41997454070247797
+    },
+    "hour-of-day climatology": {
+      "ML training run (4h, GPU, by tomorrow)": -0.8879119321658359,
+      "EV charge (6h, splittable, overnight)": -4.084919970417455,
+      "CI batch (2h, within the workday)": 0.5317127225930777,
+      "Dishwasher (2h, by morning)": -4.1639882316020564,
+      "Data centre batch (8h, splittable, 48h slack)": -0.4207549921638284
+    },
+    "month x hour climatology": {
+      "ML training run (4h, GPU, by tomorrow)": 0.3179405869749931,
+      "EV charge (6h, splittable, overnight)": -0.4481791206777463,
+      "CI batch (2h, within the workday)": 0.46296296296296335,
+      "Dishwasher (2h, by morning)": 0.5046728971962621,
+      "Data centre batch (8h, splittable, 48h slack)": -0.2893639581847568
+    },
+    "GridShift (weather ML)": {
+      "ML training run (4h, GPU, by tomorrow)": 0.84113103094193,
+      "EV charge (6h, splittable, overnight)": 0.03109674939589641,
+      "CI batch (2h, within the workday)": 0.5739413311825915,
+      "Dishwasher (2h, by morning)": 0.9082264816350121,
+      "Data centre batch (8h, splittable, 48h slack)": 0.8179013843528894
+    },
+    "National Grid official forecast": {
+      "ML training run (4h, GPU, by tomorrow)": 0.9435725777476907,
+      "EV charge (6h, splittable, overnight)": 0.8629261904013613,
+      "CI batch (2h, within the workday)": 0.8659289700727105,
+      "Dishwasher (2h, by morning)": 0.9695472707374938,
+      "Data centre batch (8h, splittable, 48h slack)": 0.969391456334722
+    }
+  },
+  "capture_rate_without_fix": {
+    "ML training run (4h, GPU, by tomorrow)": 0.8382164063501115,
+    "EV charge (6h, splittable, overnight)": -0.878014669900333,
+    "CI batch (2h, within the workday)": 0.5562479115939465,
+    "Dishwasher (2h, by morning)": 0.9056726449293668,
+    "Data centre batch (8h, splittable, 48h slack)": 0.7964980562726018
+  },
+  "realised_savings": {
+    "ML training run (4h, GPU, by tomorrow)": {
+      "naive_g": 35998.9,
+      "scheduled_g": 24845.099999999995,
+      "reduction_pct": 30.983724502693157,
+      "windows": 106
+    },
+    "EV charge (6h, splittable, overnight)": {
+      "naive_g": 580937.0,
+      "scheduled_g": 449466.5,
+      "reduction_pct": 22.63076719162319,
+      "windows": 107
+    },
+    "CI batch (2h, within the workday)": {
+      "naive_g": 7575.45,
+      "scheduled_g": 7099.95,
+      "reduction_pct": 6.276854840306517,
+      "windows": 108
+    },
+    "Dishwasher (2h, by morning)": {
+      "naive_g": 30142.8,
+      "scheduled_g": 21769.199999999997,
+      "reduction_pct": 27.779768302878306,
+      "windows": 107
+    },
+    "Data centre batch (8h, splittable, 48h slack)": {
+      "naive_g": 5557325.0,
+      "scheduled_g": 3305350.0,
+      "reduction_pct": 40.52264353803314,
+      "windows": 104
+    }
+  },
+  "feature_importance": [
+    {
+      "feature": "renew_proxy",
+      "mae_increase": 6.561443546458292
+    },
+    {
+      "feature": "hour_sin",
+      "mae_increase": 3.304710343416847
+    },
+    {
+      "feature": "dunkelflaute",
+      "mae_increase": 3.2368016947726814
+    },
+    {
+      "feature": "wind_speed_mean",
+      "mae_increase": 1.6419245451535112
+    },
+    {
+      "feature": "dow_sin",
+      "mae_increase": 1.3067800562409708
+    },
+    {
+      "feature": "solar_3",
+      "mae_increase": 0.7243247812452864
+    },
+    {
+      "feature": "solar_max",
+      "mae_increase": 0.47780946790639217
+    },
+    {
+      "feature": "doy_sin",
+      "mae_increase": 0.32166374612440407
+    },
+    {
+      "feature": "wind_power_1",
+      "mae_increase": 0.2393090651850057
+    },
+    {
+      "feature": "wind_power_max",
+      "mae_increase": 0.22265905115193974
+    },
+    {
+      "feature": "wind_power_3",
+      "mae_increase": 0.21412284740341883
+    },
+    {
+      "feature": "solar_mean",
+      "mae_increase": 0.14962048608711717
+    },
+    {
+      "feature": "wind_power_spread",
+      "mae_increase": 0.14581787465977433
+    },
+    {
+      "feature": "solar_1",
+      "mae_increase": 0.14189512722165176
+    },
+    {
+      "feature": "is_weekend",
+      "mae_increase": 0.09769569678460736
+    }
+  ],
+  "n_features": 31,
+  "n_trees": 400
+}

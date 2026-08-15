@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Logs from the data build / training runs
+data/*_log.txt
+
+# Large intermediates. `data/training.csv` IS committed so results reproduce.
+data/*.parquet
+models/*.joblib
+
+tests/_parity_tmp.mjs
+.DS_Store
+Thumbs.db

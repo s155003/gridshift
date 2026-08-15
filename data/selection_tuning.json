@@ -1,0 +1,527 @@
+{
+  "quantiles": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "smoothers": [
+    1,
+    3,
+    5
+  ],
+  "split_results": [
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "mean",
+      "smooth": 1,
+      "capture": -0.43663412505733173,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "mean",
+      "smooth": 3,
+      "capture": 0.4104677832205135,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "mean",
+      "smooth": 5,
+      "capture": 0.43700381973056274,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q50",
+      "smooth": 1,
+      "capture": -0.0839037449465881,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q50",
+      "smooth": 3,
+      "capture": 0.5130681505937217,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q50",
+      "smooth": 5,
+      "capture": 0.1920670998674273,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q60",
+      "smooth": 1,
+      "capture": 0.21707758615082892,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q60",
+      "smooth": 3,
+      "capture": 0.5292396934688451,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q60",
+      "smooth": 5,
+      "capture": 0.5054470077195562,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q70",
+      "smooth": 1,
+      "capture": -0.14877694277057044,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q70",
+      "smooth": 3,
+      "capture": 0.38974055845300276,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q70",
+      "smooth": 5,
+      "capture": 0.49799811186342197,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q80",
+      "smooth": 1,
+      "capture": -0.014722429297222412,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q80",
+      "smooth": 3,
+      "capture": 0.3785108051294264,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q80",
+      "smooth": 5,
+      "capture": 0.4406989281814987,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q90",
+      "smooth": 1,
+      "capture": -0.04206127014781657,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q90",
+      "smooth": 3,
+      "capture": 0.12218571778954103,
+      "n": 143
+    },
+    {
+      "job": "EV charge (6h, 14h slack)",
+      "forecast": "q90",
+      "smooth": 5,
+      "capture": 0.2147272103322593,
+      "n": 143
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "mean",
+      "smooth": 1,
+      "capture": 0.8152328886712095,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "mean",
+      "smooth": 3,
+      "capture": 0.8530315009938421,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "mean",
+      "smooth": 5,
+      "capture": 0.8370495967240499,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q50",
+      "smooth": 1,
+      "capture": 0.8399633185278742,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q50",
+      "smooth": 3,
+      "capture": 0.8392387832238782,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q50",
+      "smooth": 5,
+      "capture": 0.8360615179353925,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q60",
+      "smooth": 1,
+      "capture": 0.8166768499013988,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q60",
+      "smooth": 3,
+      "capture": 0.838598116936573,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q60",
+      "smooth": 5,
+      "capture": 0.8394500775456282,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q70",
+      "smooth": 1,
+      "capture": 0.8424397120259087,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q70",
+      "smooth": 3,
+      "capture": 0.8459030149120739,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q70",
+      "smooth": 5,
+      "capture": 0.8630676627435278,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q80",
+      "smooth": 1,
+      "capture": 0.7978235615371702,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q80",
+      "smooth": 3,
+      "capture": 0.8024847849438187,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q80",
+      "smooth": 5,
+      "capture": 0.808054378046246,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q90",
+      "smooth": 1,
+      "capture": 0.8010296351041765,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q90",
+      "smooth": 3,
+      "capture": 0.8007839726411247,
+      "n": 140
+    },
+    {
+      "job": "Data centre batch (8h, 48h slack)",
+      "forecast": "q90",
+      "smooth": 5,
+      "capture": 0.811401597326511,
+      "n": 140
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "mean",
+      "smooth": 1,
+      "capture": 0.5074238435613944,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "mean",
+      "smooth": 3,
+      "capture": 0.5421738355357408,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "mean",
+      "smooth": 5,
+      "capture": 0.612130470728242,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q50",
+      "smooth": 1,
+      "capture": 0.6453345781833647,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q50",
+      "smooth": 3,
+      "capture": 0.8327749048428146,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q50",
+      "smooth": 5,
+      "capture": 0.7222074948737632,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q60",
+      "smooth": 1,
+      "capture": 0.6388141710376831,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q60",
+      "smooth": 3,
+      "capture": 0.6406920546931074,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q60",
+      "smooth": 5,
+      "capture": 0.7255668943569622,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q70",
+      "smooth": 1,
+      "capture": 0.5265808546810254,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q70",
+      "smooth": 3,
+      "capture": 0.5852781621470277,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q70",
+      "smooth": 5,
+      "capture": 0.7232205909880282,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q80",
+      "smooth": 1,
+      "capture": 0.682198691027294,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q80",
+      "smooth": 3,
+      "capture": 0.7448142727045344,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q80",
+      "smooth": 5,
+      "capture": 0.7620233044900038,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q90",
+      "smooth": 1,
+      "capture": 0.5195099402318751,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q90",
+      "smooth": 3,
+      "capture": 0.5134469501242964,
+      "n": 143
+    },
+    {
+      "job": "Freezer pre-cool (3h, 12h slack)",
+      "forecast": "q90",
+      "smooth": 5,
+      "capture": 0.5245073196177822,
+      "n": 143
+    }
+  ],
+  "contig_results": [
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "mean",
+      "smooth": 1,
+      "capture": 0.8416994992525205,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "mean",
+      "smooth": 3,
+      "capture": 0.8549170490269565,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "mean",
+      "smooth": 5,
+      "capture": 0.8681033234903762,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q50",
+      "smooth": 1,
+      "capture": 0.8530774837910816,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q50",
+      "smooth": 3,
+      "capture": 0.8567129938940662,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q50",
+      "smooth": 5,
+      "capture": 0.8713130946898634,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q60",
+      "smooth": 1,
+      "capture": 0.8536634212906385,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q60",
+      "smooth": 3,
+      "capture": 0.8573339442979696,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q60",
+      "smooth": 5,
+      "capture": 0.8695039089245499,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q70",
+      "smooth": 1,
+      "capture": 0.8421026773757839,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q70",
+      "smooth": 3,
+      "capture": 0.8490018091451313,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q70",
+      "smooth": 5,
+      "capture": 0.849844659190885,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q80",
+      "smooth": 1,
+      "capture": 0.8214669714136432,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q80",
+      "smooth": 3,
+      "capture": 0.8327043534335885,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q80",
+      "smooth": 5,
+      "capture": 0.8485424355927266,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q90",
+      "smooth": 1,
+      "capture": 0.8352794109060938,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q90",
+      "smooth": 3,
+      "capture": 0.8326473087684307,
+      "n": 142
+    },
+    {
+      "job": "ML training (4h, 24h slack)",
+      "forecast": "q90",
+      "smooth": 5,
+      "capture": 0.8365213487163895,
+      "n": 142
+    }
+  ],
+  "best": {
+    "forecast": "q50",
+    "smooth": 3,
+    "capture": 0.7283606128868048
+  }
+}
