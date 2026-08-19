@@ -58,13 +58,19 @@ export default function Chart({ times, values, blocks, deadlineIndex }) {
           </g>
         ))}
 
-        {runs.map((r) => (
+        {/* Keyed by position in the list rather than by slot range, so the same
+            element persists as the window moves and can spring to it. Keying by
+            range remounted a fresh rect each time, which both lost the animation
+            and rendered one frame with width="undefined" before motion applied
+            the animate values. x and width are given initial values for the same
+            reason. */}
+        {runs.map((r, i) => (
           <motion.rect
-            key={r.key}
+            key={i}
             y={PAD.t}
             height={H - PAD.t - PAD.b}
             fill="var(--color-accent)"
-            initial={reduce ? false : { opacity: 0 }}
+            initial={reduce ? false : { x: r.x, width: r.w, opacity: 0 }}
             animate={{ x: r.x, width: r.w, opacity: 0.14 }}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           />

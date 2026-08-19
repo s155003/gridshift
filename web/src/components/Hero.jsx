@@ -184,7 +184,12 @@ export default function Hero({ forecast, regionName, onStart }) {
       {stats && (
         <p className="mx-auto max-w-[1060px] px-5 pt-2 text-[0.75rem] text-ink-2">
           The strip along the bottom edge is the next 48 hours in {regionName}, coloured by
-          carbon intensity. Live from the grid operator.
+          carbon intensity.{" "}
+          {forecast.tier === "official"
+            ? "Published by the grid operator."
+            : forecast.tier === "modelled"
+              ? "Forecast by GridShift's model on live weather."
+              : "Estimated by GridShift's model on live weather, calibrated to this grid's published annual average."}
         </p>
       )}
     </section>

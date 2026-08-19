@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { optimize } from "../scheduler.js";
 import { getForecast } from "./lib/forecast.js";
-import { PRESETS, REGIONS, TIER_COPY } from "./lib/regions.js";
+import { REGIONS, REGION_COUNT, TIER_COPY } from "./lib/regions.js";
 import Controls from "./components/Controls.jsx";
 import Chart from "./components/Chart.jsx";
 import Result, { Windows } from "./components/Result.jsx";
@@ -19,22 +19,15 @@ const TIER_CLASS = {
   transferred: "border-neg text-neg",
 };
 
-function presetToJob(key) {
-  const p = PRESETS[key];
-  return {
-    name: p.label,
-    durationHours: p.hours,
-    powerKw: p.kw,
-    interruptible: p.split,
-    minBlockHours: p.block,
-    deadlineIndex: p.deadline,
-  };
-}
+const HORIZON = 48;
 
 export default function App() {
   const [region, setRegion] = useState("GB");
-  const [preset, setPreset] = useState("ev");
-  const [job, setJob] = useState(() => presetToJob("ev"));
+  const [parsed, setParsed] = useState(null);
+  const [job, setJob] = useState({
+    name: "EV charge", durationHours: 6, powerKw: 7,
+    interruptible: true, minBlockHours: 1, deadlineIndex: 14,
+  });
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -63,9 +56,9 @@ export default function App() {
   }, [region]);
 
   const updateJob = useCallback((patch) => setJob((j) => ({ ...j, ...patch })), []);
-  const applyPreset = useCallback((key) => {
-    setPreset(key);
-    setJob(presetToJob(key));
+  const handleParsed = useCallback((result) => {
+    setParsed(result);
+    setJob(result.job);
   }, []);
 
   const { result, scheduleError } = useMemo(() => {
@@ -121,7 +114,7 @@ export default function App() {
         <Section
           label="The tool"
           title="Tell it what you are running."
-          lede="Pick a workload and a deadline. The scheduler finds the lowest-emission window that still finishes in time, using a live forecast for your grid."
+          lede={`Type what you are running and GridShift works out the rest. It then finds the lowest-emission window that still finishes in time, on a live forecast for any of ${REGION_COUNT} grid regions.`}
         >
           <div className="flex items-center gap-2 mb-5">
             <span className="label">Forecast source</span>
@@ -147,10 +140,11 @@ export default function App() {
             <Controls
               job={job}
               region={region}
-              preset={preset}
+              horizon={HORIZON}
+              parsed={parsed}
               onJob={updateJob}
               onRegion={setRegion}
-              onPreset={applyPreset}
+              onParsed={handleParsed}
             />
 
             <div>

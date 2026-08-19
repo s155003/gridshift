@@ -21,3 +21,7 @@ Thumbs.db
 # React dashboard build
 web/node_modules/
 web/dist/
+
+# region build cache
+data/_ci.csv
+data/_centroids.csv
