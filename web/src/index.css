@@ -16,6 +16,9 @@
   --color-hover: #eef3fb;
 
   --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Display type only. On every machine, no network request, and reads as
+     considered rather than generated. See DESIGN-EXCEPTIONS.md section 3. */
+  --font-display: Georgia, "Iowan Old Style", "Times New Roman", serif;
 
   --radius-xs: 2px;
   --radius-sm: 2px;
@@ -48,6 +51,14 @@ body {
   letter-spacing: 0.08em;
   font-weight: 600;
   color: var(--color-ink-2);
+}
+
+/* Display and UI type never mix inside one element. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
 }
 
 input[type="range"] {

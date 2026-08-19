@@ -37,13 +37,43 @@ await page.waitForFunction(
   { timeout: 90_000 },
 ).catch(() => errors.push("figures never populated within 90s"));
 
+// Scroll the whole page so every on-view reveal fires. A full-page screenshot
+// does not scroll by itself, so without this the capture shows sections that a
+// real reader would see but the camera never triggered.
+await page.evaluate(async () => {
+  const step = window.innerHeight * 0.8;
+  for (let y = 0; y < document.body.scrollHeight; y += step) {
+    window.scrollTo(0, y);
+    await new Promise((r) => setTimeout(r, 220));
+  }
+  window.scrollTo(0, 0);
+});
 await page.waitForTimeout(1200); // let the entry animations settle
 
-const verdict = (await page.locator("p").first().innerText().catch(() => "")).replace(/\s+/g, " ");
+const verdict = (await page.locator("#verdict, section p").first().innerText().catch(() => "")).replace(/\s+/g, " ");
 const cells = await page.locator("dl div").allInnerTexts().catch(() => []);
 const windows = await page.locator("ul li").allInnerTexts().catch(() => []);
-const tier = await page.locator("header span").innerText().catch(() => "");
+const tier = await page.locator('[class*="tier"], .label + .label').first().innerText().catch(() => "");
 const hasSvg = await page.locator("svg polyline, svg path").count();
+
+// The coloured curve is the page's central argument. If those bars collapse,
+// the page silently loses the thing it exists to show.
+const barHeights = await page.evaluate(() => {
+  const band = document.querySelector('figure div[role="img"]');
+  if (!band) return null;
+  return [...band.children].map((el) => Math.round(el.getBoundingClientRect().height));
+});
+if (!barHeights || barHeights.length < 24) {
+  errors.push(`intensity band missing or too short (${barHeights?.length ?? 0} bars)`);
+} else if (Math.max(...barHeights) < 8) {
+  errors.push(`intensity bars collapsed (max height ${Math.max(...barHeights)}px)`);
+}
+
+const sectionOpacity = await page.evaluate(() =>
+  [...document.querySelectorAll("section")].map((s) => +getComputedStyle(s).opacity),
+);
+const faded = sectionOpacity.filter((o) => o < 0.9).length;
+if (faded) errors.push(`${faded} section(s) left below full opacity`);
 
 await page.screenshot({ path: `${OUT}/dashboard.png`, fullPage: true });
 console.log("wrote assets/dashboard.png");
@@ -58,6 +88,8 @@ console.log("wrote assets/dashboard-caiso.png");
 await browser.close();
 
 console.log("\n--- what the page actually rendered ---");
+console.log("intensity bars  :", barHeights ? `${barHeights.length} bars, tallest ${Math.max(...barHeights)}px` : "MISSING");
+console.log("section opacity :", sectionOpacity.map((o) => o.toFixed(2)).join(", "));
 console.log("tier badge (GB) :", tier);
 console.log("tier badge (CAISO):", tier2);
 console.log("chart drawn     :", hasSvg > 0 ? "yes" : "NO");
