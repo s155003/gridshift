@@ -97,20 +97,34 @@ Word-by-word at 80ms is a single arrival, not a per-character flourish, and it
 resolves in well under a second. The ban was aimed at reveals that hold text
 hostage to an effect.
 
-**What was deliberately not taken from it**, because these are the parts that
-read as generated:
+**Also suspended here:** light page plane, and the ban on gradients.
+
+The hero is dark, full-bleed, and carries a photograph. Two things make that a
+considered choice rather than atmosphere for its own sake:
+
+- **The photograph is the subject.** It is high-voltage transmission towers at
+  dusk. Prisma's backdrop could have been any footage; this one is the thing
+  the product is about. Sourced from Unsplash, credited in the corner, and the
+  URL was resolved and verified reachable rather than guessed.
+- **The hero still carries live data.** The bottom edge is the next 48 hours
+  for the reader's grid, tinted by intensity. The most eye-catching element on
+  the page is a real measurement.
+
+The one gradient is a bottom-weighted scrim over the photograph. It is
+functional: display type has to stay legible over an image whose brightness we
+do not control. No decorative gradient exists anywhere on the page.
+
+**What was still not taken:**
 
 | In PrismaHero | Why not |
 |---|---|
-| Full-bleed stock video backdrop | Decorative footage with no relationship to the content. GridShift already has something with a better claim to that space: the live carbon curve for the reader's own grid. The backdrop is real data. |
-| `bg-gradient-to-b` overlay | Gradients are still banned and it exists only to make video legible |
-| `rounded-2xl` / `rounded-[2rem]` | Radii stay at 2px |
+| `rounded-2xl` / `rounded-[2rem]` | Radii stay at 2px outside the pill CTA |
 | Noise overlay, `mix-blend-overlay` | Texture for its own sake |
 | Navbar, "Join the lab", agency copy | Another product's content |
+| The CloudFront video | Not ours to serve from a published page |
 
-`PrismaHero` itself is kept in the file unmodified for reference and is never
-mounted. It hotlinks a third-party CloudFront asset, which is not ours to
-serve from a published page.
+`PrismaHero` itself is kept in `src/components/ui/prisma-hero.jsx` unmodified
+for reference and is never mounted.
 
 ---
 

@@ -88,14 +88,16 @@ export default function App() {
   const notice = error ?? scheduleError;
 
   return (
-    <div className="max-w-[1060px] mx-auto px-5 pb-20">
+    <>
+      {/* The hero sits outside the content column so it can run edge to edge. */}
       <Hero
         forecast={forecast}
         regionName={regionName}
         onStart={() => toolRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
       />
 
-      <Section
+      <div className="max-w-[1060px] mx-auto px-5 pb-20">
+        <Section
         label="The problem"
         title="A day on the grid is not flat."
         lede={
@@ -247,7 +249,8 @@ export default function App() {
             </p>
           </div>
         </div>
-      </Section>
-    </div>
+        </Section>
+      </div>
+    </>
   );
 }

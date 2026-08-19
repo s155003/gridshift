@@ -4,15 +4,27 @@ import { WordsPullUp } from "./ui/prisma-hero.jsx";
 import { intensityColor } from "../lib/scale.js";
 import AnimatedNumber from "./AnimatedNumber.jsx";
 
-/* The hero borrows PrismaHero's structure from 21st.dev: oversized display
- * type, content anchored to the bottom, a full-bleed backdrop running behind
- * it, and a word-by-word arrival on the headline via its WordsPullUp.
+/* Dark cinematic hero, following PrismaHero from 21st.dev: full-bleed imagery,
+ * oversized display type anchored to the bottom, a copy and CTA column on the
+ * right, and WordsPullUp staggering the headline.
  *
- * What it does not borrow is the stock video. Prisma's backdrop is decorative
- * footage; GridShift already has something with more claim to the space, which
- * is the live carbon curve for the reader's own grid. Same visual weight,
- * except the moving thing behind the headline is the argument itself.
+ * Two departures from the original, both deliberate:
+ *
+ * The photograph is transmission towers at dusk, so the imagery is the subject
+ * rather than decoration. Prisma's backdrop could have been anything.
+ *
+ * The live carbon curve runs along the bottom edge as a luminous strip, tinted
+ * by intensity. The hero therefore still carries real data from the reader's
+ * own grid rather than being purely atmospheric.
  */
+
+// Resolved from Unsplash and verified reachable rather than guessed.
+// "Photo of truss towers", Matthew Henry. unsplash.com/photos/yETqkLnhsUI
+const BACKDROP =
+  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=72&fm=jpg&fit=crop";
+
+const CREAM = "#E1E0CC";
+
 export default function Hero({ forecast, regionName, onStart }) {
   const reduce = useReducedMotion();
 
@@ -35,105 +47,146 @@ export default function Hero({ forecast, regionName, onStart }) {
       };
 
   return (
-    <section className="relative min-h-[86vh] flex flex-col justify-end pb-6 pt-16">
-      {/* Backdrop: the live forecast, full bleed behind the type. */}
-      {forecast && (
+    <section className="relative mb-2">
+      <div className="relative h-[88vh] min-h-[560px] w-full overflow-hidden bg-ink">
+        <img
+          src={BACKDROP}
+          alt="High-voltage transmission towers silhouetted against a dusk sky"
+          className="absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+        />
+
+        {/* Scrim. Functional rather than decorative: display type has to stay
+            legible over a photograph whose brightness we do not control. */}
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 top-24 flex items-end gap-px opacity-[0.22]"
-          aria-hidden="true"
-        >
-          {forecast.values.map((v, i) => {
-            const pct = 8 + ((v - stats.lo) / Math.max(stats.hi - stats.lo, 1)) * 92;
-            return (
-              <motion.div
-                key={i}
-                className="flex-1 origin-bottom rounded-xs"
-                style={{ background: intensityColor(v, stats.lo, stats.hi), height: `${pct}%` }}
-                initial={reduce ? false : { scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                transition={{ duration: 0.7, delay: reduce ? 0 : Math.min(i * 0.008, 0.4), ease: [0.16, 1, 0.3, 1] }}
-              />
-            );
-          })}
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(8,10,12,0.55) 0%, rgba(8,10,12,0.25) 35%, rgba(8,10,12,0.88) 100%)",
+          }}
+        />
+
+        {/* Live carbon curve along the bottom edge. The hero still carries data. */}
+        {forecast && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-16 items-end gap-px px-1 opacity-90">
+            {forecast.values.map((v, i) => {
+              const pct = 14 + ((v - stats.lo) / Math.max(stats.hi - stats.lo, 1)) * 86;
+              return (
+                <motion.div
+                  key={i}
+                  className="flex-1 origin-bottom"
+                  style={{ background: intensityColor(v, stats.lo, stats.hi), height: `${pct}%` }}
+                  initial={reduce ? false : { scaleY: 0 }}
+                  animate={{ scaleY: 1 }}
+                  transition={{
+                    duration: 0.7,
+                    delay: reduce ? 0 : 0.5 + Math.min(i * 0.008, 0.4),
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {/* Content, anchored to the bottom as in the original */}
+        <div className="absolute inset-x-0 bottom-0 px-5 pb-20 sm:px-8 md:px-10">
+          <div className="mx-auto max-w-[1060px]">
+            <motion.p {...rise} className="label mb-3" style={{ color: "rgba(225,224,204,0.65)" }}>
+              GridShift
+            </motion.p>
+
+            <div className="grid grid-cols-12 items-end gap-6">
+              <div className="col-span-12 lg:col-span-7">
+                <h1
+                  className="display m-0 leading-[0.88] tracking-[-0.04em] text-[12vw] sm:text-[10vw] lg:text-[6.4vw]"
+                  style={{ color: CREAM }}
+                  aria-label="Run it when the grid is clean."
+                >
+                  <span aria-hidden="true">
+                    <WordsPullUp text="Run it when the grid is" />{" "}
+                    <span style={{ color: "#8fd3b0" }}>
+                      <WordsPullUp text="clean." />
+                    </span>
+                  </span>
+                </h1>
+              </div>
+
+              <div className="col-span-12 flex flex-col gap-5 lg:col-span-5 lg:pb-3">
+                <motion.p
+                  {...rise}
+                  transition={{ ...rise.transition, delay: reduce ? 0 : 0.5 }}
+                  className="text-[0.95rem] sm:text-base"
+                  style={{ color: "rgba(225,224,204,0.78)", lineHeight: 1.45 }}
+                >
+                  Electricity is far dirtier at some hours than others. An EV charging overnight,
+                  a dishwasher, a training run: all of them have a deadline, not a start time.
+                  Move them into the clean hours and the same work emits less CO<sub>2</sub>.
+                </motion.p>
+
+                {stats && (
+                  <motion.dl
+                    {...rise}
+                    transition={{ ...rise.transition, delay: reduce ? 0 : 0.6 }}
+                    className="m-0 grid grid-cols-3 gap-3 border-t pt-3"
+                    style={{ borderColor: "rgba(225,224,204,0.25)" }}
+                  >
+                    {[
+                      { k: "Now", v: stats.now, tone: CREAM },
+                      {
+                        k: stats.when.toLocaleString([], { weekday: "short", hour: "2-digit" }),
+                        v: stats.lo,
+                        tone: "#8fd3b0",
+                      },
+                      { k: "Avoidable", v: stats.cut, tone: "#8fd3b0", suffix: "%" },
+                    ].map((s) => (
+                      <div key={s.k}>
+                        <dt className="label mb-1" style={{ color: "rgba(225,224,204,0.6)" }}>
+                          {s.k}
+                        </dt>
+                        <dd className="m-0 text-[1.25rem] tnum leading-none" style={{ color: s.tone }}>
+                          <AnimatedNumber value={s.v} />
+                          {s.suffix}
+                        </dd>
+                      </div>
+                    ))}
+                  </motion.dl>
+                )}
+
+                <motion.button
+                  {...rise}
+                  transition={{ ...rise.transition, delay: reduce ? 0 : 0.7 }}
+                  type="button"
+                  onClick={onStart}
+                  className="group inline-flex items-center gap-2 self-start rounded-full py-1 pl-5 pr-1 text-sm font-semibold text-black transition-all hover:gap-3 sm:text-base"
+                  style={{ background: CREAM }}
+                >
+                  Schedule something on your grid
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110 sm:h-10 sm:w-10">
+                    <ArrowRight className="h-4 w-4" style={{ color: CREAM }} />
+                  </span>
+                </motion.button>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
 
-      <div className="relative">
-        <motion.p {...rise} className="label mb-5">
-          GridShift
-        </motion.p>
-
-        <h1
-          className="display m-0 leading-[0.86] tracking-[-0.04em] text-[13vw] md:text-[9.5vw] lg:text-[8.2vw]"
-          aria-label="Run it when the grid is clean."
+        {/* Sits above the curve strip rather than colliding with it. */}
+        <p
+          className="absolute right-3 text-[0.6rem] z-10"
+          style={{ bottom: "4.5rem", color: "rgba(225,224,204,0.5)" }}
         >
-          <span aria-hidden="true">
-            <WordsPullUp text="Run it when the" />
-            <span className="text-accent">
-              <WordsPullUp text=" grid is clean." />
-            </span>
-          </span>
-        </h1>
-
-        <div className="mt-9 grid grid-cols-12 items-end gap-5">
-          <motion.div
-            {...rise}
-            transition={{ ...rise.transition, delay: reduce ? 0 : 0.45 }}
-            className="col-span-12 lg:col-span-7"
-          >
-            <p className="text-[1.02rem] max-w-[54ch] text-ink-2">
-              Electricity is far dirtier at some hours than others, depending on wind, sun and
-              demand. An EV charging overnight, a dishwasher, a model training run: all of them
-              have a <b className="text-ink font-semibold">deadline</b>, not a start time. Move
-              them into the clean hours and the same work emits less CO<sub>2</sub>, with no new
-              hardware and nothing else changed.
-            </p>
-
-            <button
-              type="button"
-              onClick={onStart}
-              className="group mt-6 inline-flex items-center gap-2 rounded-xs border border-ink bg-ink py-1.5 pl-4 pr-1.5 text-[0.92rem] font-semibold text-white transition-all hover:gap-3 hover:bg-accent hover:border-accent"
-            >
-              Schedule something on your grid
-              <span className="flex h-7 w-7 items-center justify-center rounded-xs bg-white/15 transition-transform group-hover:translate-x-0.5">
-                <ArrowRight className="h-3.5 w-3.5" />
-              </span>
-            </button>
-          </motion.div>
-
-          {stats && (
-            <motion.dl
-              {...rise}
-              transition={{ ...rise.transition, delay: reduce ? 0 : 0.55 }}
-              className="col-span-12 lg:col-span-5 m-0 border-t border-ink pt-3 grid grid-cols-3 gap-3"
-            >
-              <div>
-                <dt className="label mb-1">Now</dt>
-                <dd className="m-0 text-[1.35rem] tnum leading-none">
-                  <AnimatedNumber value={stats.now} />
-                </dd>
-              </div>
-              <div>
-                <dt className="label mb-1">
-                  {stats.when.toLocaleString([], { weekday: "short", hour: "2-digit" })}
-                </dt>
-                <dd className="m-0 text-[1.35rem] tnum leading-none text-pos">
-                  <AnimatedNumber value={stats.lo} />
-                </dd>
-              </div>
-              <div>
-                <dt className="label mb-1">Avoidable</dt>
-                <dd className="m-0 text-[1.35rem] tnum leading-none text-pos">
-                  <AnimatedNumber value={stats.cut} />%
-                </dd>
-              </div>
-              <p className="col-span-3 m-0 text-[0.75rem] text-ink-2">
-                gCO<sub>2</sub>/kWh in {regionName}, live from the grid operator.
-              </p>
-            </motion.dl>
-          )}
-        </div>
+          Photo: Matthew Henry / Unsplash
+        </p>
       </div>
+
+      {stats && (
+        <p className="mx-auto max-w-[1060px] px-5 pt-2 text-[0.75rem] text-ink-2">
+          The strip along the bottom edge is the next 48 hours in {regionName}, coloured by
+          carbon intensity. Live from the grid operator.
+        </p>
+      )}
     </section>
   );
 }
