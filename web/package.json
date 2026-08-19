@@ -1,0 +1,24 @@
+{
+  "name": "gridshift-web",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "description": "GridShift dashboard. Runs the trained carbon-intensity model in the browser.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "smoke": "node smoke.mjs"
+  },
+  "dependencies": {
+    "motion": "^13.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^5.1.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.2.1"
+  }
+}

@@ -17,3 +17,7 @@ models/*.joblib
 tests/_parity_tmp.mjs
 .DS_Store
 Thumbs.db
+
+# React dashboard build
+web/node_modules/
+web/dist/

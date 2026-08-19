@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* The palette and shape rules come from DESIGN.md. Radii stay at 2px, there
+   are no shadows and no gradients, and the type stack is system sans because
+   Inter/Geist/Space Grotesk read as generated rather than designed. */
+@theme {
+  --color-plane: #f9f9f7;
+  --color-plane-2: #f4f4f1;
+  --color-ink: #0b0b0b;
+  --color-ink-2: #52514e;
+  --color-accent: #2a78d6;
+  --color-pos: #1c5cab;
+  --color-neg: #a83232;
+  --color-rule: #e0dfda;
+  --color-rule-2: #ebeae5;
+  --color-hover: #eef3fb;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-xs: 2px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 3px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-plane);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Tabular numerals everywhere a figure can change, so values do not jitter
+   sideways as they animate. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--color-ink-2);
+}
+
+input[type="range"] {
+  accent-color: var(--color-accent);
+  width: 100%;
+}
+
+:where(button, select, summary, input, a):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* Respect the OS setting. Motion here is functional, but a user who has asked
+   for less of it should still get a working page. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

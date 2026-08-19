@@ -14,7 +14,7 @@ const HOURLY = "temperature_2m,wind_speed_100m,shortwave_radiation,cloud_cover";
 const SITES = [[38.8, -119.4], [36.8, -121.4], [36.8, -117.4], [34.8, -119.4]];
 const GB_MEAN = 124, CAISO_MEAN = 240;
 
-const spec = JSON.parse(readFileSync(new URL("./model.json", import.meta.url)));
+const spec = JSON.parse(readFileSync(new URL("./public/model.json", import.meta.url)));
 console.log(`model: ${spec.n_trees} trees, ${spec.features.length} features`);
 console.log(`trained on ${spec.trained_on.rows} rows ` +
   `(${spec.trained_on.start.slice(0, 10)} → ${spec.trained_on.end.slice(0, 10)})`);

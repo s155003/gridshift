@@ -40,8 +40,42 @@ jobs:
       - name: Test
         run: pytest tests -q
 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm ci
+        working-directory: web
+
+      - name: Build
+        run: npm run build
+        working-directory: web
+
+      # The bundle is useless without the trees, and a silent public/ copy
+      # failure would ship a page that renders and then cannot forecast.
+      - name: Check the model shipped with the bundle
+        run: |
+          test -f dist/model.json || { echo "model.json missing from build output"; exit 1; }
+          node -e "
+            const m = require('./dist/model.json');
+            if (!m.trees?.length) { console.error('model.json has no trees'); process.exit(1); }
+            console.log('model.json ok:', m.n_trees, 'trees,', m.features.length, 'features');
+          "
+        working-directory: web
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
   pages:
-    needs: test
+    needs: [test, build]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
@@ -51,10 +85,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: web
       - id: deploy
         uses: actions/deploy-pages@v4

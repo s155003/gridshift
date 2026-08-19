@@ -234,7 +234,7 @@ def predict_from_spec(spec: dict[str, Any], X: np.ndarray) -> np.ndarray:
 
     Mirrors ``web/model.js`` exactly so a test can assert the browser and
     Python paths agree. Takes the spec dict rather than a fitted estimator, so
-    the parity test needs only the committed ``web/model.json`` -- no pickled
+    the parity test needs only the committed ``web/public/model.json``, with no
     artefact, and no dependency on the scikit-learn version that produced it.
     """
     out = np.full(len(X), spec["baseline"], dtype=float)

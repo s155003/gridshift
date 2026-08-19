@@ -14,7 +14,7 @@ test (15%). Nothing is ever fit or chosen on the test set:
 
 Produces:
     models/carbon_model.joblib   the fitted production model
-    web/model.json               the same trees, for in-browser inference
+    web/public/model.json        the same trees, for in-browser inference
     data/metrics.json            every number quoted in the README
     assets/*.png                 evaluation charts
 """
@@ -267,11 +267,11 @@ def main() -> int:
     model.save(ROOT / "models" / "carbon_model.joblib")
     spec = model.to_json()
     spec["smooth_hours"] = best_smooth
-    (ROOT / "web" / "model.json").write_text(
+    (ROOT / "web" / "public" / "model.json").write_text(
         json.dumps(spec, separators=(",", ":")), encoding="utf-8")
-    size = (ROOT / "web" / "model.json").stat().st_size / 1024
+    size = (ROOT / "web" / "public" / "model.json").stat().st_size / 1024
     print("saved model      -> models/carbon_model.joblib")
-    print(f"exported for web -> web/model.json ({size:.0f} KB, "
+    print(f"exported for web -> web/public/model.json ({size:.0f} KB, "
           f"{spec['n_trees']} trees)")
 
     payload = {

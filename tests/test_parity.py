@@ -101,21 +101,22 @@ def test_scheduler_matches_javascript(seed: int) -> None:
 MODEL_JS = """
 import { readFileSync } from "node:fs";
 import { predictOne } from "../web/model.js";
-const spec = JSON.parse(readFileSync(new URL("../web/model.json", import.meta.url)));
+const spec = JSON.parse(readFileSync(new URL("../web/public/model.json", import.meta.url)));
 console.log(JSON.stringify(INPUT.rows.map((r) => predictOne(spec, r))));
 """
 
 
-@pytest.mark.skipif(not (ROOT / "web" / "model.json").exists(),
+@pytest.mark.skipif(not (ROOT / "web" / "public" / "model.json").exists(),
                     reason="model not exported yet")
 def test_model_matches_javascript() -> None:
     """The exported trees must evaluate identically in Node and Python.
 
-    Both sides read the committed ``web/model.json``, the artefact the
+    Both sides read the committed ``web/public/model.json``, the artefact the
     published page actually ships, so this runs on a fresh clone with no
     pickled model and no dependence on the scikit-learn version that fit it.
     """
-    spec = json.loads((ROOT / "web" / "model.json").read_text(encoding="utf-8"))
+    spec = json.loads(
+        (ROOT / "web" / "public" / "model.json").read_text(encoding="utf-8"))
     names = spec["features"]
 
     rng = np.random.default_rng(0)
