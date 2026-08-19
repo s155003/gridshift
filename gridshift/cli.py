@@ -140,7 +140,7 @@ def cmd_schedule(args) -> int:
     if parsed.spec.deadline:
         print(f"  deadline: {parsed.spec.deadline:%a %d %b %H:%M} UTC")
     print(f"  parsed  : {parsed.source}"
-          + (f" — {parsed.reasoning}" if parsed.reasoning else ""))
+          + (f": {parsed.reasoning}" if parsed.reasoning else ""))
     print()
     print(chart(fc.times, fc.intensity, marked))
     print()

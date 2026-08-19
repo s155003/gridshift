@@ -1,4 +1,4 @@
-/* GridShift — the scheduler, ported from `gridshift/scheduler.py`.
+/* GridShift: the scheduler, ported from `gridshift/scheduler.py`.
  *
  * Same algorithms, same guarantees: prefix-sum sliding window for contiguous
  * jobs, an exact dynamic program for splittable jobs with a minimum block
@@ -107,7 +107,7 @@ function interruptible(cost, lo, hi, n, minBlock) {
   }
 
   // The DP can emit two legal blocks that happen to abut. They are one run of
-  // machine time, so present them as one — otherwise the UI shows a job
+  // machine time, so present them as one. Otherwise the UI shows a job
   // "stopping" and "restarting" at the same instant.
   const slots = [];
   for (const [a, b] of blocks) for (let i = a; i < b; i++) slots.push(i);

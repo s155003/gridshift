@@ -1,7 +1,7 @@
 /* End-to-end smoke test of the dashboard's data path, without a browser.
  *
  * Fetches a live weather forecast, runs the exported trees, and schedules a
- * job — exactly what `app.js` does, minus the DOM. Run with:
+ * job, exactly what `app.js` does, minus the DOM. Run with:
  *
  *     node web/smoke.mjs
  */

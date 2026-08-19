@@ -111,8 +111,8 @@ console.log(JSON.stringify(INPUT.rows.map((r) => predictOne(spec, r))));
 def test_model_matches_javascript() -> None:
     """The exported trees must evaluate identically in Node and Python.
 
-    Both sides read the committed ``web/model.json`` — the artefact the
-    published page actually ships — so this runs on a fresh clone with no
+    Both sides read the committed ``web/model.json``, the artefact the
+    published page actually ships, so this runs on a fresh clone with no
     pickled model and no dependence on the scikit-learn version that fit it.
     """
     spec = json.loads((ROOT / "web" / "model.json").read_text(encoding="utf-8"))

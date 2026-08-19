@@ -1,4 +1,4 @@
-"""Unit tests for the scheduler — the component that must not be wrong.
+"""Unit tests for the scheduler, the component that must not be wrong.
 
 Every number a user sees comes from this module, so it is tested against
 hand-computed expectations rather than snapshots.

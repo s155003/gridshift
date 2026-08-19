@@ -1,4 +1,4 @@
-/* GridShift dashboard — live data, in-browser model, no backend. */
+/* GridShift dashboard: live data, in-browser model, no backend. */
 
 import { optimize } from "./scheduler.js";
 import { predictSeries } from "./model.js";
@@ -162,7 +162,7 @@ function fmt(d) {
 }
 
 function drawChart(fc, result) {
-  const W = 900, H = 260, PAD = { l: 46, r: 14, t: 16, b: 28 };
+  const W = 900, H = 220, PAD = { l: 40, r: 10, t: 12, b: 24 };
   const n = fc.values.length;
   const lo = Math.min(...fc.values), hi = Math.max(...fc.values);
   const span = Math.max(hi - lo, 1);
@@ -173,54 +173,90 @@ function drawChart(fc, result) {
   for (const b of result.blocks)
     for (let i = b.startIndex; i < b.endIndex; i++) chosen.add(i);
 
-  const area = fc.values.map((v, i) => `${x(i)},${y(v)}`).join(" ");
-  const bars = fc.values.map((v, i) => {
-    const w = (W - PAD.l - PAD.r) / n;
-    const on = chosen.has(i);
-    return `<rect x="${x(i) - w / 2}" y="${PAD.t}" width="${w}" height="${H - PAD.t - PAD.b}"
-      fill="${on ? "var(--accent)" : "transparent"}" opacity="${on ? .18 : 0}"/>`;
-  }).join("");
+  const line = fc.values.map((v, i) => `${x(i)},${y(v)}`).join(" ");
+  const w = (W - PAD.l - PAD.r) / n;
+  const bands = [...chosen]
+    .map((i) => `<rect x="${x(i) - w / 2}" y="${PAD.t}" width="${w}" ` +
+      `height="${H - PAD.t - PAD.b}" fill="var(--accent)" opacity="0.14"/>`)
+    .join("");
 
   const deadlineX = x(Math.min(+$("deadline").value, n - 1));
-  const ticks = [lo, lo + span / 2, hi].map((v) =>
-    `<g><line x1="${PAD.l}" y1="${y(v)}" x2="${W - PAD.r}" y2="${y(v)}" stroke="var(--grid)"/>
-     <text x="${PAD.l - 8}" y="${y(v) + 4}" text-anchor="end" class="ax">${v.toFixed(0)}</text></g>`
+  const ticks = [lo, (lo + hi) / 2, hi].map((v) =>
+    `<line x1="${PAD.l}" y1="${y(v)}" x2="${W - PAD.r}" y2="${y(v)}" stroke="#e0dfda"/>` +
+    `<text x="${PAD.l - 6}" y="${y(v) + 3}" text-anchor="end" class="ax">${v.toFixed(0)}</text>`
   ).join("");
 
   const hours = fc.times.map((t, i) => t.getHours() % 6 === 0
-    ? `<text x="${x(i)}" y="${H - 8}" text-anchor="middle" class="ax">${String(t.getHours()).padStart(2, "0")}</text>`
+    ? `<text x="${x(i)}" y="${H - 7}" text-anchor="middle" class="ax">${String(t.getHours()).padStart(2, "0")}</text>`
     : "").join("");
 
-  $("chart").innerHTML = `
-    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
-         aria-label="Carbon intensity forecast with the chosen run window highlighted">
-      ${ticks}${bars}
-      <polyline points="${area}" fill="none" stroke="var(--line)" stroke-width="2"/>
+  $("chart").innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
+      aria-label="Carbon intensity over the next ${n} hours, with the scheduled window marked">
+      ${ticks}${bands}
+      <polyline points="${line}" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
       <line x1="${deadlineX}" y1="${PAD.t}" x2="${deadlineX}" y2="${H - PAD.b}"
-            stroke="var(--warn)" stroke-dasharray="4 4"/>
-      <text x="${deadlineX - 6}" y="${PAD.t + 12}" text-anchor="end" class="ax dl">deadline</text>
+            stroke="var(--neg)" stroke-dasharray="3 3"/>
+      <text x="${deadlineX - 5}" y="${PAD.t + 10}" text-anchor="end" class="ax dl">deadline</text>
       ${hours}
     </svg>`;
 }
 
-function render(fc, result) {
+/** The figures belong inside a sentence, not stacked above one. */
+function verdict(fc, result, job) {
+  const when = result.blocks
+    .map((b) => `<b>${fmt(b.start)}</b> to <b>${fmt(b.end)}</b>`)
+    .join(", then ");
+  const pct = result.savedPct;
+
+  if (pct < 0.5) {
+    return `Starting now is already the cleanest option inside this deadline. ` +
+      `${fc.region.name} is forecast at <b>${result.naiveIntensity.toFixed(0)}</b> ` +
+      `gCO<sub>2</sub>/kWh across the window, with too little variation to be ` +
+      `worth waiting for.`;
+  }
+  const strength = pct < 5
+    ? `a <span class="none">slim ${pct.toFixed(0)}%</span> reduction`
+    : `<span class="cut">${pct.toFixed(0)}% less CO<sub>2</sub></span>`;
+  return `Run ${job.name.toLowerCase()} at ${when}, when ${fc.region.name} is ` +
+    `forecast at <b>${result.optimalIntensity.toFixed(0)}</b> rather than ` +
+    `<b>${result.naiveIntensity.toFixed(0)}</b> gCO<sub>2</sub>/kWh. That is ` +
+    `${strength} for the same <b>${result.energyKwh.toFixed(1)}</b> kWh of work, ` +
+    `saving <b>${(result.savedG / 1000).toFixed(2)}</b> kg.`;
+}
+
+function fillTable(fc, result) {
+  const chosen = new Set();
+  for (const b of result.blocks)
+    for (let i = b.startIndex; i < b.endIndex; i++) chosen.add(i);
+
+  $("tbl").tBodies[0].innerHTML = fc.times.map((t, i) => {
+    const on = chosen.has(i);
+    return `<tr class="${on ? "on" : ""}"><td>${fmt(t)}</td>` +
+      `<td>${fc.values[i].toFixed(0)}</td>` +
+      `<td>${on ? "yes" : ""}</td></tr>`;
+  }).join("");
+}
+
+function render(fc, result, job) {
   $("tier").textContent = fc.tier;
   $("tier").className = "tier " + fc.tier;
   $("note").textContent = fc.note;
 
-  $("saved").textContent = `${result.savedPct.toFixed(0)}%`;
-  $("savedKg").textContent = `${(result.savedG / 1000).toFixed(2)} kg CO₂ avoided`;
-  $("nowVal").textContent = `${result.naiveIntensity.toFixed(0)}`;
-  $("shiftVal").textContent = `${result.optimalIntensity.toFixed(0)}`;
-  $("energy").textContent = `${result.energyKwh.toFixed(1)} kWh`;
-  $("carkm").textContent = `${result.carKm.toFixed(0)} km`;
+  $("verdict").innerHTML = verdict(fc, result, job);
+
+  $("nowVal").innerHTML = `${result.naiveIntensity.toFixed(0)} <span>gCO<sub>2</sub>/kWh</span>`;
+  $("shiftVal").innerHTML = `${result.optimalIntensity.toFixed(0)} <span>gCO<sub>2</sub>/kWh</span>`;
+  $("cutVal").innerHTML = `${result.savedPct.toFixed(0)}<span>%</span>`;
+  $("energy").innerHTML = `${result.energyKwh.toFixed(1)} <span>kWh</span>`;
+  $("carkm").innerHTML = `${result.carKm.toFixed(0)} <span>km not driven</span>`;
 
   $("windows").innerHTML = result.blocks
-    .map((b) => `<li><span>${fmt(b.start)}</span> → <span>${fmt(b.end)}</span></li>`)
-    .join("");
+    .map((b) => `<li>${fmt(b.start)} to ${fmt(b.end)}</li>`).join("");
 
   $("caveat").hidden = fc.tier !== "transferred";
   drawChart(fc, result);
+  fillTable(fc, result);
 }
 
 async function refresh({ refetch = false } = {}) {
@@ -233,14 +269,14 @@ async function refresh({ refetch = false } = {}) {
     const job = jobFromControls();
     job.deadlineIndex = Math.min(job.deadlineIndex, fc.values.length);
     if (job.durationHours > job.deadlineIndex) {
-      $("status").textContent = "deadline is shorter than the job — widen it";
+      $("status").textContent = "The deadline is shorter than the job. Widen it.";
       return;
     }
-    render(fc, optimize(fc.times, fc.values, job));
+    render(fc, optimize(fc.times, fc.values, job), job);
     $("status").textContent = "";
   } catch (err) {
     console.error(err);
-    $("status").textContent = "could not load live data: " + err.message;
+    $("status").textContent = "Could not load live data: " + err.message;
   } finally {
     state.busy = false;
   }

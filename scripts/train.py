@@ -327,7 +327,7 @@ def make_charts(test, y_te, preds, cap, rs, naive_caps) -> None:
     ax.plot(t, preds["hour-of-day climatology"][:n], color=warn, lw=1.1,
             ls="--", label="hour-of-day baseline")
     ax.set_ylabel("gCO$_2$eq / kWh")
-    ax.set_title("GB carbon intensity forecast from weather alone — held-out test period",
+    ax.set_title("GB carbon intensity forecast from weather alone, held-out test period",
                  loc="left", fontsize=12, color=ink)
     ax.legend(frameon=False, ncol=3, fontsize=9)
     ax.grid(alpha=.2)

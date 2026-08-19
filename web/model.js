@@ -1,9 +1,9 @@
-/* GridShift — the trained model, running in your browser.
+/* GridShift: the trained model, running in your browser.
  *
  * `model.json` holds the raw node arrays of the gradient-boosted ensemble fit
  * in `scripts/train.py`. Everything below is a faithful port of
  * `gridshift/features.py` and the tree traversal in `gridshift/model.py`, so
- * the browser and Python produce identical predictions — a test asserts it.
+ * the browser and Python produce identical predictions, and a test asserts it.
  *
  * There is no server. The page fetches a weather forecast and evaluates 400
  * decision trees client-side.
