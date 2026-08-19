@@ -4,6 +4,15 @@ import AnimatedNumber from "./AnimatedNumber.jsx";
 const fmt = (d) =>
   d.toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" });
 
+/* Drop the leading capital so the name reads naturally mid-sentence, but never
+   at the cost of an acronym. Blanket toLowerCase() turned "EV charge" into
+   "ev charge" and "ML training run" into "ml training run". */
+function midSentence(name) {
+  const [first] = name.split(" ");
+  if (/^[A-Z]{2,}/.test(first)) return name;
+  return name.charAt(0).toLowerCase() + name.slice(1);
+}
+
 /* The verdict is a sentence with the figures inside it, not a wall of numbers
    above one. It also tells the truth about small savings instead of dressing
    them up, which matters because the honest answer on a flat grid is "barely
@@ -33,7 +42,7 @@ function Verdict({ result, regionName, jobName }) {
 
   return (
     <>
-      Run {jobName.toLowerCase()} at {when}, when {regionName} is forecast at{" "}
+      Run {midSentence(jobName)} at {when}, when {regionName} is forecast at{" "}
       <b className="tnum font-semibold">
         <AnimatedNumber value={result.optimalIntensity} />
       </b>{" "}

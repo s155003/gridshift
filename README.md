@@ -20,6 +20,12 @@ deadline, **6 to 40% less CO₂**, no new hardware.
 **[Live dashboard](https://s155003.github.io/gridshift/)**, which runs a trained
 model in your browser against live weather with no backend.
 
+![The GridShift dashboard](assets/dashboard.png)
+
+Regenerate that screenshot, and check the deployed page for runtime errors,
+with `node shoot.mjs` inside `web/`. Grep and unit tests cannot catch a React
+error or a layout defect, so this drives a real browser at the live URL.
+
 ![Forecast vs actual](assets/forecast.png)
 
 ---
