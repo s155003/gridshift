@@ -84,6 +84,36 @@ happens because it looks impressive. Everything collapses under
 
 ---
 
+## 5. Oversized display type and a word-by-word arrival
+
+**Rule suspended:** letter-by-letter reveals are banned; motion must do work.
+
+**Why:** the hero borrows its structure from `PrismaHero` on 21st.dev, which
+is oversized display type anchored to the bottom of a full-bleed backdrop,
+with its `WordsPullUp` component staggering the headline word by word. That
+component is in `src/components/ui/prisma-hero.jsx`, used as published.
+
+Word-by-word at 80ms is a single arrival, not a per-character flourish, and it
+resolves in well under a second. The ban was aimed at reveals that hold text
+hostage to an effect.
+
+**What was deliberately not taken from it**, because these are the parts that
+read as generated:
+
+| In PrismaHero | Why not |
+|---|---|
+| Full-bleed stock video backdrop | Decorative footage with no relationship to the content. GridShift already has something with a better claim to that space: the live carbon curve for the reader's own grid. The backdrop is real data. |
+| `bg-gradient-to-b` overlay | Gradients are still banned and it exists only to make video legible |
+| `rounded-2xl` / `rounded-[2rem]` | Radii stay at 2px |
+| Noise overlay, `mix-blend-overlay` | Texture for its own sake |
+| Navbar, "Join the lab", agency copy | Another product's content |
+
+`PrismaHero` itself is kept in the file unmodified for reference and is never
+mounted. It hotlinks a third-party CloudFront asset, which is not ours to
+serve from a published page.
+
+---
+
 ## What did not change
 
 - Palette, 2px radii, no shadows, no gradients
