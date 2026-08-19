@@ -333,9 +333,20 @@ scripts/
   train.py          train, select policy on validation, evaluate once on test
   tune_selection.py the optimiser's-curse experiment
   explain_today.py  why today's saving is the size it is
-web/              zero-backend dashboard; runs the trained trees in-browser
+web/
+  scheduler.js    the optimiser, ported from scheduler.py and kept framework-free
+  model.js        the tree evaluator, likewise
+  public/         model.json, the 400 exported trees the page fetches
+  src/            React dashboard (Vite, Tailwind, motion)
 tests/            41 tests, including Python and JavaScript parity
 ```
+
+The dashboard is a React app built with Vite, but `scheduler.js` and `model.js`
+stay plain framework-free modules at the root of `web/`. That is deliberate: the
+Python parity tests import them directly under Node, so the logic cannot quietly
+diverge from the framework layer that renders it. Build it with
+`npm install && npm run build` inside `web/`. There is still no backend, since
+the trees are evaluated in the browser.
 
 **Python and JavaScript parity is enforced by CI.** The dashboard
 re-implements the scheduler and the tree evaluator in JS so the published page
