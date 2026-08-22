@@ -54,6 +54,13 @@ const ATOMIC_HINTS = ["dishwasher", "cycle", "wash", "render", "migration", "bak
 
 const NUM = "(\\d+(?:\\.\\d+)?)";
 
+/* Keywords must match whole words. Plain substring matching meant the "ev" in
+   "whenever" scheduled an EV charge, which is the kind of wrong that makes the
+   product look like it is guessing rather than reading. */
+const matchesKeyword = (haystack, kw) =>
+  new RegExp(String.raw`\b${kw}\b`, "i").test(haystack);
+
+
 /** "6 hours", "6h", "90 minutes", "an hour and a half" */
 function parseDuration(s) {
   let m = s.match(new RegExp(`${NUM}\\s*(?:hours?|hrs?|h)\\b`));
@@ -83,7 +90,8 @@ function parseDeadline(s, now, horizon) {
   if (m) return { value: +m[1], explicit: true, note: null };
 
   // "by 8am", "before 7 pm", "by 08:30"
-  m = s.match(/(?:by|before)\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/);
+  m = s.match(/(?:by|before)\s+(?:the\s+|my\s+|our\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/)
+    || s.match(/(?:by|before)\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/);
   if (m) {
     let hour = +m[1];
     const mins = m[2] ? +m[2] : 0;
@@ -113,6 +121,20 @@ function parseDeadline(s, now, horizon) {
   return { value: null, explicit: false, note: null };
 }
 
+/* A short label for something the device table does not know about. Drops the
+   leading imperative and any trailing fragment, so "run my aquarium chiller for
+   5 hours" reads as "aquarium chiller" rather than "run my aquarium chiller"
+   and "brew beer for 4 hours" does not end mid-number. */
+const LEADING = /^(?:can you\s+|please\s+)?(?:run|start|schedule|do|charge up|put on|set|kick off)\s+/i;
+const TRAILING = /\s+(?:for|by|before|within|in|at|tonight|tomorrow|today|overnight|whenever|sometime|asap)\b.*$/i;
+
+function fallbackName(text) {
+  let s = text.trim().replace(LEADING, "").replace(TRAILING, "");
+  s = s.replace(/^(?:my|the|our|a|an)\s+/i, "").replace(/[,.;:]+$/, "").trim();
+  const words = s.split(/\s+/).filter(Boolean).slice(0, 4);
+  return words.join(" ") || "job";
+}
+
 /**
  * @param {string} text  what the reader typed
  * @param {{now?: Date, horizon?: number}} opts
@@ -122,7 +144,7 @@ export function parseWorkload(text, { now = new Date(), horizon = 48 } = {}) {
   const s = ` ${text.toLowerCase().trim()} `;
   const notes = [];
 
-  const device = DEVICES.find((d) => d.k.some((kw) => s.includes(kw))) ?? null;
+  const device = DEVICES.find((d) => d.k.some((kw) => matchesKeyword(s, kw))) ?? null;
 
   const dur = parseDuration(s);
   const pow = parsePower(s);
@@ -146,12 +168,12 @@ export function parseWorkload(text, { now = new Date(), horizon = 48 } = {}) {
   deadline = Math.min(Math.max(deadline, Math.ceil(durationHours)), horizon);
 
   let interruptible = device?.split ?? false;
-  if (SPLITTABLE_HINTS.some((h) => s.includes(h))) interruptible = true;
-  if (ATOMIC_HINTS.some((h) => s.includes(h))) interruptible = false;
+  if (SPLITTABLE_HINTS.some((h) => matchesKeyword(s, h))) interruptible = true;
+  if (ATOMIC_HINTS.some((h) => matchesKeyword(s, h))) interruptible = false;
   if (/\b(can't pause|cannot pause|one go|uninterrupted|in one block)\b/.test(s)) interruptible = false;
   if (/\b(can pause|resumable|checkpoint|splittable)\b/.test(s)) interruptible = true;
 
-  const name = device?.label ?? (text.trim().split(/\s+/).slice(0, 4).join(" ") || "job");
+  const name = device?.label ?? fallbackName(text);
 
   return {
     job: {
